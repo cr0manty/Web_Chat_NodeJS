@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <% include blocks/head.ejs %>
+    <title>Chat</title>
+</head>
+<body>
+<% include blocks/header.ejs %>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-6 offset-md-3">
+            <h1 class="mb-3">
+                Chat
+            </h1>
+            <label for="chat">History</label>
+            <textarea readonly id="chat" cols="80" rows="20" class="form-control"></textarea>
+            <br>
+            <label for="text">Message</label>
+
+            <div class="container">
+                <div class="row">
+                    <input id="text" size="80" class="form-control col order-first" onkeyup=""
+                           placeholder="Enter your message here">
+                    <button class="btn btn-danger col-md-2 ml-3"
+                            onclick="send_message()">
+                        Send
+                    </button>
+                </div>
+            </div>
+            <br>
+            <button onclick="disconnect()" class="btn btn-outline-danger">
+                Leave this room
+            </button>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+
+{% endblock %}
