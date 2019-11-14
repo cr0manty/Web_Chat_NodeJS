@@ -13,20 +13,21 @@
         </div>
     </div>
     <div class="navbar-nav">
-        <!--        if user-->
-        <div class="navbar-nav">
-            <a class="nav-item nav-link disabled"> <%= username %></a>
-        </div>
-        <div class="navbar-nav">
-            <a class="nav-item nav-link" href="/">Logout</a>
-        </div>
-        <!--        else-->
-        <div class="navbar-nav">
-            <a class="nav-item nav-link" href="/">Sign up</a>
-        </div>
-        <div class="navbar-nav">
-            <a class="nav-item nav-link" href="/">Sign in</a>
-        </div>
+        <% if (is_auth) { %>
+            <div class="navbar-nav">
+                <a class="nav-item nav-link disabled"> <%= username %></a>
+            </div>
+            <div class="navbar-nav">
+                <a class="nav-item nav-link" href="/">Logout</a>
+            </div>
+        <% } else { %>
+            <div class="navbar-nav">
+                <a class="nav-item nav-link" href="/">Sign up</a>
+            </div>
+            <div class="navbar-nav">
+                <a class="nav-item nav-link" href="/">Sign in</a>
+            </div>
     </div>
-    <!--        endif-->
+    <% } %>
+
 </nav>
