@@ -27,3 +27,5 @@ const RoomSchema = new Schema({
         ref: 'User'
     },
 });
+
+module.exports = mongoose.model('Room', RoomSchema);

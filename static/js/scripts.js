@@ -1,4 +1,4 @@
-var socket;
+let socket;
 
 function disconnect() {
     if (socket.connected) {
@@ -14,17 +14,17 @@ $(document).ready(function () {
         socket.emit('options', {});
     });
     socket.on('message', function (data) {
-        var chat = document.getElementById("chat");
+        const chat = document.getElementById("chat");
         chat.value += data.msg + '\n';
         chat.scrollTop = chat.scrollHeight;
     });
     socket.on('options', function (data) {
-        var chat = document.getElementById("chat");
+        const chat = document.getElementById("chat");
         chat.value += data.msg + '\n';
         chat.scrollTop = chat.scrollHeight;
     });
     $('#text').keypress(function (e) {
-        var code = e.keyCode || e.which;
+        const code = e.keyCode || e.which;
         if (code == 13) {
             send_message();
         }
@@ -35,7 +35,7 @@ $(document).ready(function () {
 });
 
 function send_message() {
-    text = document.getElementById("text").value;
+    const text = document.getElementById("text").value;
     document.getElementById("text").value = '';
     socket.emit('message', {msg: text});
 }
