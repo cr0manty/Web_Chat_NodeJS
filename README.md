@@ -3,3 +3,4 @@
 ### Technology used
 * **NodeJS** - used for server side
 * **Socket.IO** - used for one-to-one connections
+* **MongoDB** - used for store data

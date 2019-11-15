@@ -12,6 +12,15 @@ const UserSchema = new Schema({
     password: {
         type: String,
         required: true,
+        validate: {
+            validator: function (password) {
+                if (password.length < 8)
+                    return false;
+                else if (!password.match(/\d+/))
+                    return false;
+            },
+            message: 'This password is too weak'
+        }
     },
     firstName: {
         type: String,
@@ -28,7 +37,7 @@ const UserSchema = new Schema({
 });
 
 UserSchema.statics.authenticate = function (username, password, callback) {
-    User.findOne({email: email})
+    User.findOne({username: username})
         .exec(function (err, user) {
             if (err) {
                 return callback(err)
@@ -58,4 +67,5 @@ UserSchema.pre('save', function (next) {
     })
 });
 
-module.exports = mongoose.model('User', UserSchema);
+let User = mongoose.model('User', UserSchema);
+module.exports = User;

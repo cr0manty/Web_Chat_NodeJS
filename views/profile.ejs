@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
     <% include blocks/head.ejs %>
-    <title><% user.username %></title>
+    <title>
+        <% username %>
+    </title>
 </head>
 <body>
 <% include blocks/header.ejs %>
@@ -10,7 +12,7 @@
     <div class="row">
         <div class="col-6 offset-md-3">
             <h1 class="mb-3">
-                <% user.username %>
+                <% username %>
             </h1>
         </div>
     </div>
