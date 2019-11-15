@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const bodyParser = require('body-parser');
 const User = require('../models/user');
+
+const urlencodedParser = bodyParser.urlencoded({extended: false});
 
 router.get('/', function (req, res) {
     res.render('index');
@@ -14,7 +17,7 @@ router.get('/signin', function (req, res) {
     res.render('login');
 });
 
-router.post('/signin', function (req, res, next) {
+router.post('/signin', urlencodedParser, function (req, res, next) {
     let form = req.body;
     if (form.username && form.password) {
         User.authenticate(req.body.logemail, req.body.logpassword, function (error, user) {
@@ -38,7 +41,7 @@ router.get('/signup', function (req, res) {
     res.render('registration');
 });
 
-router.post('/signup', function (req, res, next) {
+router.post('/signup', urlencodedParser, function (req, res, next) {
     let form = req.body;
 
     if (form.password !== form.password2) {
@@ -77,8 +80,8 @@ router.get('/logout', function (req, res) {
 });
 
 router.get('/profile', function (req, res) {
-    let user = User.find();
-
+    // let user = User.find();
+    res.render('profile');
 });
 
 function isAuthenticated(req, res, next) {

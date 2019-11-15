@@ -27,7 +27,8 @@ app.use(session({
     })
 }));
 
-require('./routes/router.js')(app);
+const router = require('./routes/router.js');
+app.use('/', router);
 
 const server = app.listen(port, function () {
     console.log('127.0.0.1:' + port)
