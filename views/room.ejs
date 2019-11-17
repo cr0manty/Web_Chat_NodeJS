@@ -15,7 +15,6 @@
             <label for="chat">History</label>
             <textarea readonly id="chat" cols="80" rows="15 " class="form-control"></textarea>
             <br>
-            <form action="">
                 <% if (in_room) { %>
                     <label for="text">Message</label>
                     <div class="container">
@@ -23,21 +22,20 @@
                             <input id="text" class="form-control col order-first" onkeyup=""
                                    placeholder="Enter your message here">
                             <button class="btn btn-danger col-md-2 ml-3"
-                                    onclick="send_message()">
+                                    onclick="send_message(user, room)">
                                 Send
                             </button>
                         </div>
                     </div>
                     <br>
-                    <button onclick="disconnect()" name="leave" type="submit" class="btn btn-outline-danger">
+                    <button onclick="disconnect(user, room)" class="btn btn-outline-danger">
                         Leave this room
                     </button>
                 <% } else { %>
-                    <button type="submit" name="join" class="btn btn-outline-danger">
+                    <button onclick="connect(user, room)" class="btn btn-outline-danger">
                         Join Room
                     </button>
                 <% } %>
-            </form>
         </div>
     </div>
 </div>

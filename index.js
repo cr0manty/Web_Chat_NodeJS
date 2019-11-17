@@ -36,4 +36,4 @@ app.use('/', router);
 const server = app.listen(port, function () {
     console.log('127.0.0.1:' + port)
 });
-require('./routes/socket.js')(server);
+//require('./routes/socket.js')(server);

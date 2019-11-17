@@ -9,7 +9,7 @@
                 <h5 class="card-title"><%=room.name%></h5>
                 <hr>
                 <p class="card-text"><%=room.description%></p>
-                <p class="card-text"><small class="text-muted">User: <%=room.createdDate.toUTCString()%></small></p>
+                <p class="card-text"><small class="text-muted">Created at: <%=room.createdDate.toUTCString()%></small></p>
                 <% if(is_auth) {%>
                 <a href="/room/<%=room.name%>" class="btn btn-danger">Enter room</a>
                 <%} else { %>

@@ -8,12 +8,17 @@ function disconnect() {
     }
 }
 
+function connect(user, room) {
+    socket = io.connect('http://' + document.domain + ':' + location.port + '/room/' + room.name);
+    socket.emit('connect', {user: user, room: room});
+}
+
 $(document).ready(function () {
-    socket = io.connect('http://' + document.domain + ':' + location.port + '/chat');
-    socket.on('connect', function () {
-        socket.emit('options', {});
-    });
+    socket = io.connect('http://' + document.domain + ':' + location.port + '/room/');
+
     socket.on('message', function (data) {
+        socket = io.connect('http://' + document.domain + ':' + location.port + '/room/' + room.name);
+
         const chat = document.getElementById("chat");
         chat.value += data.msg + '\n';
         chat.scrollTop = chat.scrollHeight;
@@ -31,11 +36,12 @@ $(document).ready(function () {
     });
     socket.on('disconnect', function () {
         window.location.href = "/";
+        socket.emit('connect', {});
     });
 });
 
-function send_message() {
+function send_message(user, room) {
     const text = document.getElementById("text").value;
     document.getElementById("text").value = '';
-    socket.emit('message', {msg: text});
+    socket.emit('message', {user: user, room: room, text: text});
 }

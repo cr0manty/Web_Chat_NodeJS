@@ -136,7 +136,8 @@ router.get('/profile/:username', function (req, res) {
             if (user) {
                 res.render('profile', {
                         is_auth: req.session.is_auth,
-                        user: user,
+                        user: req.session.user,
+                        curUser: user,
                         room: req.session.room,
                     }
                 );

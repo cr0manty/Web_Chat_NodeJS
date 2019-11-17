@@ -3,17 +3,33 @@
 <head>
     <% include blocks/head.ejs %>
     <title>
-        <%= user.username %>
+        <%= curUser.username %>
     </title>
 </head>
 <body>
 <% include blocks/header.ejs %>
-<div class="container mt-5">
+<div class="container mt-4">
     <div class="row">
         <div class="col-6 offset-md-3">
-            <h1 class="mb-3">
-                <%= user.username %>
-            </h1>
+            <div class="container mt-5">
+                <div class="d-flex flex-row justify-content-between">
+                    <div class="block" style="float: left;">
+                        <div class="upload-btn-wrapper">
+                            <form action="/setimage" method="POST" enctype="multipart/form-data">
+                                <img src="/img/user-default.png"
+                                     class="img-thumbnail" id="profile_image"/>
+                                <input type="file">
+                            </form>
+                        </div>
+                        <h1 align="center" style="margin-top: 0.8rem;"><%= curUser.username %></h1>
+                    </div >
+                        <div class="block" style="float: right;">
+                            <p class="text-secondary"> Имя: <br><%= curUser.firstName %></p>
+                            <p class="text-secondary"> Фамилия: <br><%= curUser.lastName %></p>
+                        </div>
+                    <br>
+                </div>
+            </div>
         </div>
     </div>
 </div>

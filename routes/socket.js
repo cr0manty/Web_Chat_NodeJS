@@ -5,12 +5,12 @@ module.exports = function (server) {
     const io = require("socket.io")(server);
 
     io.sockets.on('connection', function (socket) {
-        socket.on('username', function (user, room) {
+        socket.on('join', function (user, room) {
             Room.find({_id: room._id}, function (err, room) {
                 if (room) {
                     room.active_user++;
                     room.roomUsers.push(user);
-                    io.emit('options', user.username + ' join the chat...');
+                    io.emit('message', user.username + ' join the chat...');
                 }
             });
         });
@@ -20,7 +20,7 @@ module.exports = function (server) {
                 if (room) {
                     room.active_user--;
                     room.roomUsers.pop(user);
-                    io.emit('settings', user.username + ' left the chat..');
+                    io.emit('options', user.username + ' left the chat..');
                 }
             });
         });
@@ -31,7 +31,7 @@ module.exports = function (server) {
                 text: text,
                 room: room
             }, function (err, message) {
-                if (!err) {
+                if (message) {
                     io.emit('message', user.username + ': ' + message.text);
                 }
             });
