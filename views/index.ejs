@@ -12,6 +12,9 @@
             <h1 class="mb-3">
                 Active rooms
             </h1>
+            <% rooms.forEach(function (room) { %>
+            <% include blocks/roomcard.ejs %>
+            <% }); %>
         </div>
     </div>
 </div>

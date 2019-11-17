@@ -1,4 +1,17 @@
-body{
+body {
     color: white;
-    background-color: #1b1e21;
+    background-color: #121315;
+}
+
+.card {
+    background-color: #242425;
+    border-radius: 0.75rem;
+}
+
+.bg-dark {
+    background-color: #242425!important;
+}
+
+hr {
+    border-top: 1px solid rgba(121, 121, 121, 0.64);
 }

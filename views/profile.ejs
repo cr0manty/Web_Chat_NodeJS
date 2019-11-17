@@ -3,7 +3,7 @@
 <head>
     <% include blocks/head.ejs %>
     <title>
-        <% username %>
+        <%= user.username %>
     </title>
 </head>
 <body>
@@ -12,7 +12,7 @@
     <div class="row">
         <div class="col-6 offset-md-3">
             <h1 class="mb-3">
-                <% username %>
+                <%= user.username %>
             </h1>
         </div>
     </div>

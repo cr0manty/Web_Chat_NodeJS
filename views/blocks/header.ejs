@@ -6,22 +6,30 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-            <a class="nav-item nav-link" id="chat_url" href="/chat">Chat</a>
+            <a class="nav-item nav-link" href="/room/">Room</a>
         </div>
+        <% if(is_auth) { %>
+            <div class="navbar-nav">
+                <a class="nav-item nav-link<% if(!is_auth) { %> disabled<%}%>" href="/create">Create room</a>
+            </div>
+        <% } %>
     </div>
     <div class="navbar-nav">
+        <% if(is_auth) { %>
             <div class="navbar-nav">
-                <a class="nav-item nav-link" href="/profile">Profile</a>
+                <a class="nav-item nav-link" href="/profile/<%= user.username %>"><%= user.username %></a>
             </div>
             <div class="navbar-nav">
                 <a class="nav-item nav-link" href="/logout">Logout</a>
             </div>
+        <% } else { %>
             <div class="navbar-nav">
                 <a class="nav-item nav-link" href="/signup">Sign up</a>
             </div>
             <div class="navbar-nav">
                 <a class="nav-item nav-link" href="/signin">Sign in</a>
             </div>
+        <% } %>
     </div>
 
 </nav>

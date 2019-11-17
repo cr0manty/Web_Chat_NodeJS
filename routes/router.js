@@ -1,43 +1,35 @@
 const express = require('express');
 const router = express.Router();
-const bodyParser = require('body-parser');
 const User = require('../models/user');
-
-const urlencodedParser = bodyParser.urlencoded({extended: false});
-
-function getUser(id) {
-    let user = User.findOne(id);
-    if (!user) {
-        req.session.is_auth = false;
-    }
-    return user;
-}
+const Room = require('../models/room');
 
 router.get('/', function (req, res) {
-    let user = null;
-    if (req.session.is_auth) {
-        user = getUser(req.session.user_id);
-    }
-    res.render('index');
+    Room.find({}, function (err, rooms) {
+        res.render('index', {
+            is_auth: req.session.is_auth,
+            user: req.session.user,
+            rooms: rooms
+        });
+    })
 });
 
-router.get('/chat', function (req, res) {
-    if (req.session.room) {
-        res.render('chat');
-    }
-    else {
-        res.redirect('/')
-    }
+router.get('/room/:name', function (req, res) {
+    res.render('room', {
+        is_auth: req.session.is_auth,
+        user: req.session.user
+    });
 });
 
 router.get('/signin', function (req, res) {
     if (!req.session.is_auth)
-        res.render('login');
+        res.render('login', {
+            is_auth: req.session.is_auth,
+        });
     else
         res.redirect('/');
 });
 
-router.post('/signin', urlencodedParser, function (req, res, next) {
+router.post('/signin', function (req, res, next) {
     let form = req.body;
     if (form.username && form.password) {
         User.authenticate(form.username, form.password, function (error, user) {
@@ -46,7 +38,7 @@ router.post('/signin', urlencodedParser, function (req, res, next) {
                 err.status = 401;
                 return next(err);
             } else {
-                req.session.user_id = user._id;
+                req.session.user = user;
                 req.session.is_auth = true;
                 return res.redirect('/profile');
             }
@@ -61,12 +53,14 @@ router.post('/signin', urlencodedParser, function (req, res, next) {
 
 router.get('/signup', function (req, res) {
     if (!req.session.is_auth)
-        res.render('registration');
+        res.render('registration', {
+            is_auth: req.session.is_auth,
+        });
     else
         req.redirect('/');
 });
 
-router.post('/signup', urlencodedParser, function (req, res, next) {
+router.post('/signup', function (req, res, next) {
     let form = req.body;
 
     if (form.password !== form.password2) {
@@ -90,8 +84,6 @@ router.post('/signup', urlencodedParser, function (req, res, next) {
             if (error) {
                 return next(error);
             } else {
-                req.session.user_id = user._id;
-                req.session.is_auth = true;
                 return res.redirect('/signin');
             }
         });
@@ -105,18 +97,67 @@ router.post('/signup', urlencodedParser, function (req, res, next) {
 
 router.get('/logout', function (req, res) {
     req.session.is_auth = false;
-    req.session.user_id = -1;
+    req.session.user = null;
     res.redirect('/');
 });
 
-router.get('/profile', function (req, res) {
+router.get('/profile/:username', function (req, res) {
     if (req.session.is_auth) {
-        let user = getUser(req.session.user_id);
-        res.render('profile', {
-            username: user.name,
+        User.findOne({username: req.params.username}, function (err, user) {
+            if (user) {
+                res.render('profile', {
+                        is_auth: req.session.is_auth,
+                        user: user,
+                        room: req.session.room,
+                    }
+                );
+            } else {
+                res.send(404);
+            }
         });
+    } else {
+        res.redirect('/signin');
     }
-    res.redirect('/signin');
+});
+
+router.get('/create', function (req, res) {
+    res.render('createroom', {
+        is_auth: req.session.is_auth,
+        user: req.session.user,
+    });
+});
+
+router.post('/create', function (req, res) {
+    let form = req.body;
+    if (form.name && form.max_user) {
+        Room.findOne({
+            name: form.name,
+            createdBy: req.session.user
+        }, function (err, room) {
+            if (room) {
+                res.redirect('/create');
+            } else if (err) {
+                res.redirect('/create');
+            } else {
+                let data = {
+                    name: form.name,
+                    max_user: form.max_user,
+                    createdBy: req.session.user
+                };
+                if (form.description)
+                    data.description = form.description;
+                Room.create(data, function (error, room) {
+                    if (error) {
+                        return next(error);
+                    } else {
+                        return res.redirect('/create');
+                    }
+                })
+            }
+        });
+    } else {
+        res.redirect('/create');
+    }
 });
 
 module.exports = router;
