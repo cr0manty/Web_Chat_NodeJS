@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
 const Room = require('../models/room');
+const Message = require('../models/message');
 
 router.get('/', function (req, res) {
     Room.find({}, function (err, rooms) {
@@ -13,11 +14,39 @@ router.get('/', function (req, res) {
     })
 });
 
-router.get('/room/:name', function (req, res) {
-    res.render('room', {
-        is_auth: req.session.is_auth,
-        user: req.session.user
+router.get('/room/:name', function (req, res, next) {
+    if (!req.session.is_auth) {
+        const err = new Error('You must be logged in to view the room');
+        err.status = 403;
+        return next(err);
+    }
+    Room.find({name: req.params.name}, async function (err, room) {
+        if (err || !room) {
+            res.send(404);
+        } else {
+            const messages = Message.find({
+                room: room
+            });
+            let in_room;
+            await Room.count({
+                name: room.name,
+                roomUsers: req.session.user
+            }, function (err, count) {
+                    if(err)
+                        in_room = 0;
+                    else
+                        in_room = count;
+            });
+            res.render('room', {
+                is_auth: req.session.is_auth,
+                in_room: in_room,
+                user: req.session.user,
+                room: room,
+                messages: messages
+            });
+        }
     });
+
 });
 
 router.get('/signin', function (req, res) {
@@ -34,13 +63,13 @@ router.post('/signin', function (req, res, next) {
     if (form.username && form.password) {
         User.authenticate(form.username, form.password, function (error, user) {
             if (error || !user) {
-                var err = new Error('Wrong username or password.');
+                const err = new Error('Wrong username or password');
                 err.status = 401;
                 return next(err);
             } else {
                 req.session.user = user;
                 req.session.is_auth = true;
-                return res.redirect('/profile');
+                return res.redirect('/profile/' + user.username);
             }
         });
     } else {

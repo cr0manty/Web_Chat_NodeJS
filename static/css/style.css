@@ -8,8 +8,12 @@ body {
     border-radius: 0.75rem;
 }
 
+.users {
+    margin-left: 3.5rem !important;
+}
+
 .bg-dark {
-    background-color: #242425!important;
+    background-color: #242425 !important;
 }
 
 hr {

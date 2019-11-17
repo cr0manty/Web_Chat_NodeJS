@@ -1,15 +1,20 @@
 <div class="card mb-3" style="max-width: 540px;">
     <div class="row no-gutters">
         <div class="col-md-4">
-            <img src="..." class="card-img" alt="...">
+            <img src="/img/room-default.png" class="card-img" alt="...">
+            <p class="card-text users"><small class="text-muted">Users: <%=room.active_user%>/<%=room.max_user%></small></p>
         </div>
         <div class="col-md-8">
             <div class="card-body">
                 <h5 class="card-title"><%=room.name%></h5>
                 <hr>
                 <p class="card-text"><%=room.description%></p>
-                <p class="card-text"><small class="text-muted"><%=room.createdDate%></small></p>
+                <p class="card-text"><small class="text-muted">User: <%=room.createdDate.toUTCString()%></small></p>
+                <% if(is_auth) {%>
                 <a href="/room/<%=room.name%>" class="btn btn-danger">Enter room</a>
+                <%} else { %>
+                    <p class="text-danger">You must be logged in to view the room</p>
+                <% } %>
             </div>
         </div>
     </div>

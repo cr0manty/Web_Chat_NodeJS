@@ -14,7 +14,7 @@ const MessageSchema = new Schema({
         type: String,
         required: true
     },
-    Room: {
+    room: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Room'
     },

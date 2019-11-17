@@ -25,12 +25,12 @@ $(document).ready(function () {
     });
     $('#text').keypress(function (e) {
         const code = e.keyCode || e.which;
-        if (code == 13) {
+        if (code === 13) {
             send_message();
         }
     });
     socket.on('disconnect', function () {
-        window.location.href = "{{ url_for('index') }}";
+        window.location.href = "/";
     });
 });
 
